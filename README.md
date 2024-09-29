@@ -3,6 +3,12 @@
 ### 1. Install SQL 
 - [install - PostgreSQL](https://www.postgresql.org/)
 
+#### What is SQL
+- SQL (Structured Query Language), also pronounced “sequel”, is a programming language used to CRUD data stored in a relational database.
+- Keep in Mind That...
+    - SQL keywords are NOT case sensitive: select is the same as SELECT
+    - Semicolon after SQL Statements. Some database systems require a semicolon at the end of each SQL statement.
+
 ### 2. Start PostgreSQL 
 - Open a terminal session and type: `psql`. You’ll see your PostgreSQL version and psql’s prompt:
 ```bash
@@ -31,7 +37,7 @@ Schemas define the database’s:
 1. Tables, including the number and data type of each column
 2. Indexes for efficient access of data
 3. Constraints (rules, such as whether a field can be null or not)
-
+![](https://github.com/miya-w/2024-SQL-note/blob/main/images/sql-table.png)
 ### **Rows (Records)**
 
 A row in a table represents a single instance of the data entity.
@@ -62,7 +68,7 @@ Common constraints for a column include:
 - `REFERENCES` (Foreign Key): value in column must match the primary key in another table
 - `NOT NULL`: column must have a value, it cannot be empty (null)
 - `UNIQUE`: data in this column must be unique among all rows in the table
-
+![](https://github.com/miya-w/2024-SQL-note/blob/main/images/sql-datebase-pk-fk.png)
 ### **Primary Keys (PK) and Foreign Keys (FK)**
 
 The field (or fields) that uniquely identify each row in table are know known as that table’s **primary key (PK)**.
@@ -124,6 +130,8 @@ The `JOIN` clause is used with a `SELECT` to query for data from more than o
 Let’s say we have the following data relationship: `Band ---< Musician`
 *A Band has many Musicians*, and *a Musician belongs to a Band*
 
+![](https://github.com/miya-w/2024-SQL-note/blob/main/images/sql-datebase-pk-fk.png)
+
 ```sql
 -- table right of JOIN has the FKs
 SELECT*FROM bands JOIN musicians ON bands.id= musicians.band_id;
@@ -145,8 +153,104 @@ WHERE b.name = 'Rush' AND m.name LIKE 'G%';
   2 | Rush | prog rock |  2 | Geddy Lee | I love to write, it's my first love. |       2
 (1 row)
 
+## SQl Syntax
+
+```sql
+SELECT * ,column1, column2, ... ---example
+FROM table_name
+WHERE condition;
+```
+### Some of The Most Important SQL Commands
+- SELECT - extracts data from a database
+- UPDATE - updates data in a database
+- DELETE - deletes data from a database
+- INSERT INTO - inserts new data into a database
+CREATE DATABASE - creates a new database
+ALTER DATABASE - modifies a database
+CREATE TABLE - creates a new table
+ALTER TABLE - modifies a table
+DROP TABLE - deletes a table
+CREATE INDEX - creates an index (search key)
+DROP INDEX - deletes an index
+
+```sql
+-- create database ---
+CREATE DATABASE databasename;
+-- Drop database ---
+DROP DATABASE databasename;
+--- select all ---
+SELECT * FROM tablename;
+
+--- create table ---
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    column3 datatype,
+   ....
+);
+CREATE TABLE Persons (
+    PersonID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255)
+);
+---The PersonID column is of type int and will hold an integer.
+--- The LastName, FirstName, Address, and City columns are of type varchar 
+--- and will hold characters, and the maximum length for these fields is 255 characters.
+
+```
+### The SQL WHERE Clause
+
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+SELECT * FROM Customers
+WHERE Country='Mexico';
+```
+
+### Create
+
+```sql
+--- The INSERT INTO statement is used to insert new records in a table. 
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+-- ex. --
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
+VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+-- ex. --
+INSERT INTO musicians (name, band_id) VALUES ('Geddy Lee', 2);
+```
+### Update
+```sql
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+
+UPDATE Customers
+SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'
+WHERE CustomerID = 1;
+
+```
+### Delete
+```sql
+DELETE FROM table_name WHERE condition;
+
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+```
+### JOIN
+```
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+```
+
+
 ### Resources
 ---
+- [W3C-SQL](https://www.w3schools.com/sql/)
 - [SQL Basics Cheat Sheet](https://www.datacamp.com/cheat-sheet/sql-basics-cheat-sheet)
 - [The 80 Top SQL Interview Questions and Answers for Beginners & Intermediate Practitioners](https://www.datacamp.com/blog/top-sql-interview-questions-and-answers-for-beginners-and-intermediate-practitioners)
 - [40+ scenario-based SQL interview questions to ask programmers](https://www.testgorilla.com/blog/scenario-based-sql-interview-questions/)
