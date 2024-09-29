@@ -124,6 +124,25 @@ CREATE TABLE musicians (
 
 \d musicians -- details for table
 ```
+insert value
+The REFERENCES constraint is what makes a column a FK.
+```sql
+-- Let's try again, but first, let's verify the ids of the bands
+SELECT * FROM bands;
+
+-- Assuming 'Rush' has an id of 2
+INSERT INTO musicians (name, band_id) VALUES ('Geddy Lee', 2);
+
+SELECT * FROM musicians;  -- There's Geddy!
+
+-- Now let's add Neil
+-- Use two single quotes to embed an apostrophe
+INSERT INTO musicians (name, quote, band_id)
+VALUES (
+'Neil Peart',
+'If you''ve got a problem, take it out on a drum',
+2);
+```
 ### **Querying Data using a `JOIN` Clause**
 
 The `JOIN` clause is used with a `SELECT` to query for data from more than one table.
@@ -135,24 +154,24 @@ Let’s say we have the following data relationship: `Band ---< Musician`
 ```sql
 -- table right of JOIN has the FKs
 SELECT*FROM bands JOIN musicians ON bands.id= musicians.band_id;
-```
+
  id | name |   genre   | id |    name    |                     quote                      | band_id 
 ----+------+-----------+----+------------+------------------------------------------------+---------
   2 | Rush | prog rock |  3 | Neil Peart | If you've got a problem, take it out on a drum |       2
   2 | Rush | prog rock |  2 | Geddy Lee  | I love to write, it's my first love.           |       2
 (2 rows)
-
+```
 If we want to return all bands, regardless of whether or not there’s any matches for musicians, we use whats called a **LEFT JOIN**:
 ```sql
 SELECT * FROM bands b LEFT JOIN musicians m ON b.id = m.band_id
 WHERE b.name = 'Rush' AND m.name LIKE 'G%';
-```
+
 
  id | name |   genre   | id |   name    |                quote                 | band_id 
 ----+------+-----------+----+-----------+--------------------------------------+---------
   2 | Rush | prog rock |  2 | Geddy Lee | I love to write, it's my first love. |       2
 (1 row)
-
+```
 ## SQl Syntax
 
 ```sql
