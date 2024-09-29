@@ -107,8 +107,6 @@ SELECT * FROM bands; -- Use the up arrow to access previous commands
 
 **Creating a Table for a Related Data Entity**
 
-Let’s say we have the following data relationship: `Band ---< Musician`
-*A Band has many Musicians*, and *a Musician belongs to a Band*
 ```sql
 -- The REFERENCES constraint is what makes a column a FK.
 CREATE TABLE musicians (
@@ -120,7 +118,32 @@ CREATE TABLE musicians (
 
 \d musicians -- details for table
 ```
+### **Querying Data using a `JOIN` Clause**
 
+The `JOIN` clause is used with a `SELECT` to query for data from more than one table.
+Let’s say we have the following data relationship: `Band ---< Musician`
+*A Band has many Musicians*, and *a Musician belongs to a Band*
+
+```sql
+-- table right of JOIN has the FKs
+SELECT*FROM bands JOIN musicians ON bands.id= musicians.band_id;
+```
+ id | name |   genre   | id |    name    |                     quote                      | band_id 
+----+------+-----------+----+------------+------------------------------------------------+---------
+  2 | Rush | prog rock |  3 | Neil Peart | If you've got a problem, take it out on a drum |       2
+  2 | Rush | prog rock |  2 | Geddy Lee  | I love to write, it's my first love.           |       2
+(2 rows)
+
+If we want to return all bands, regardless of whether or not there’s any matches for musicians, we use whats called a **LEFT JOIN**:
+```sql
+SELECT * FROM bands b LEFT JOIN musicians m ON b.id = m.band_id
+WHERE b.name = 'Rush' AND m.name LIKE 'G%';
+```
+
+ id | name |   genre   | id |   name    |                quote                 | band_id 
+----+------+-----------+----+-----------+--------------------------------------+---------
+  2 | Rush | prog rock |  2 | Geddy Lee | I love to write, it's my first love. |       2
+(1 row)
 
 ### Resources
 ---
